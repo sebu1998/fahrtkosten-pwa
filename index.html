@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Fahrtkosten Rechner</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon192.svg" type="image/svg+xml" />
+
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    body { margin: 0; background: #f6f7f8; color: #111; }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 20px; }
+    .card { background: #fff; border-radius: 16px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.06); }
+    h1 { font-size: 20px; margin: 0 0 10px; }
+    p { margin: 6px 0 14px; color: #333; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    label { display: block; font-size: 12px; color: #444; margin-bottom: 6px; }
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 12px;
+      border: 1px solid #d9dde2;
+      border-radius: 12px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+    }
+    input:focus { border-color: #8aa4ff; box-shadow: 0 0 0 3px rgba(138,164,255,.25); }
+    .row { margin-top: 12px; }
+    .results { margin-top: 14px; display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .resultBox { border: 1px solid #eef0f3; border-radius: 14px; padding: 12px; background: #fbfbfc; }
+    .resultTitle { font-size: 12px; color: #555; margin: 0 0 6px; }
+    .resultValue { font-size: 18px; font-weight: 700; margin: 0; }
+    .muted { font-size: 12px; color: #666; margin-top: 10px; }
+    .footer { margin-top: 12px; font-size: 12px; color: #666; }
+    @media (min-width: 720px) {
+      .results { grid-template-columns: 1fr 1fr 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Fahrtkosten Rechner</h1>
+      <p>Berechnet Kosten für einfache Fahrt, hin und zurück, plus Anteil pro Person.</p>
+
+      <div class="grid">
+        <div>
+          <label for="distance">Strecke gesamt in km (hin und zurück)</label>
+          <input id="distance" inputmode="decimal" type="number" min="0" step="0.1" value="36.6" />
+        </div>
+
+        <div>
+          <label for="consumption">Verbrauch in Liter pro 100 km</label>
+          <input id="consumption" inputmode="decimal" type="number" min="0" step="0.1" value="7.5" />
+        </div>
+
+        <div>
+          <label for="price">Spritpreis in Euro pro Liter</label>
+          <input id="price" inputmode="decimal" type="number" min="0" step="0.01" value="1.60" />
+        </div>
+
+        <div>
+          <label for="persons">Personen</label>
+          <input id="persons" inputmode="numeric" type="number" min="1" step="1" value="2" />
+        </div>
+      </div>
+
+      <div class="results" aria-live="polite">
+        <div class="resultBox">
+          <p class="resultTitle">Kosten einfache Fahrt</p>
+          <p class="resultValue" id="costOneWay">0,00 €</p>
+        </div>
+        <div class="resultBox">
+          <p class="resultTitle">Kosten hin und zurück</p>
+          <p class="resultValue" id="costRoundTrip">0,00 €</p>
+        </div>
+        <div class="resultBox">
+          <p class="resultTitle">Pro Person</p>
+          <p class="resultValue" id="costPerPerson">0,00 €</p>
+        </div>
+      </div>
+
+      <div class="footer" id="details"></div>
+      <div class="muted">Hinweis: Rundung auf 2 Nachkommastellen, Anzeige im Euro Format.</div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
