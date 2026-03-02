@@ -10,84 +10,217 @@
   <link rel="icon" href="icon192.svg" type="image/svg+xml" />
 
   <style>
-    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-    body { margin: 0; background: #f6f7f8; color: #111; }
-    .wrap { max-width: 760px; margin: 0 auto; padding: 20px; }
-    .card { background: #fff; border-radius: 16px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.06); }
-    h1 { font-size: 20px; margin: 0 0 10px; }
-    p { margin: 6px 0 14px; color: #333; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    label { display: block; font-size: 12px; color: #444; margin-bottom: 6px; }
+    :root {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --blue: #4a6cf7;
+      --blue-light: #eef1fe;
+      --green: #22c55e;
+      --green-light: #f0fdf4;
+      --orange: #f59e0b;
+      --orange-light: #fffbeb;
+      --border: #e2e5ea;
+      --bg: #f4f5f7;
+      --card: #ffffff;
+      --text: #1a1a2e;
+      --text-secondary: #64748b;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); }
+
+    .wrap { max-width: 520px; margin: 0 auto; padding: 24px 16px; }
+
+    /* Header */
+    .header { text-align: center; margin-bottom: 24px; }
+    .header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0 0 6px;
+      letter-spacing: -0.3px;
+    }
+    .header p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Card */
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 8px 24px rgba(0,0,0,.04);
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      margin: 0 0 16px;
+    }
+
+    /* Input Grid */
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .field { position: relative; }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .field .unit {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
     input {
       width: 100%;
-      box-sizing: border-box;
-      padding: 12px 12px;
-      border: 1px solid #d9dde2;
-      border-radius: 12px;
-      font-size: 14px;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 500;
       outline: none;
       background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      color: var(--text);
     }
-    input:focus { border-color: #8aa4ff; box-shadow: 0 0 0 3px rgba(138,164,255,.25); }
-    .row { margin-top: 12px; }
-    .results { margin-top: 14px; display: grid; grid-template-columns: 1fr; gap: 10px; }
-    .resultBox { border: 1px solid #eef0f3; border-radius: 14px; padding: 12px; background: #fbfbfc; }
-    .resultTitle { font-size: 12px; color: #555; margin: 0 0 6px; }
-    .resultValue { font-size: 18px; font-weight: 700; margin: 0; }
-    .muted { font-size: 12px; color: #666; margin-top: 10px; }
-    .footer { margin-top: 12px; font-size: 12px; color: #666; }
-    @media (min-width: 720px) {
-      .results { grid-template-columns: 1fr 1fr 1fr; }
+    input::placeholder {
+      color: #b0b8c4;
+      font-weight: 400;
+    }
+    input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(74,108,247,.15);
+    }
+
+    /* Results */
+    .results { display: grid; grid-template-columns: 1fr; gap: 12px; }
+
+    .result-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .result-box.primary {
+      background: var(--blue-light);
+      border: 1px solid rgba(74,108,247,.12);
+    }
+    .result-box.success {
+      background: var(--green-light);
+      border: 1px solid rgba(34,197,94,.12);
+    }
+    .result-box.warning {
+      background: var(--orange-light);
+      border: 1px solid rgba(245,158,11,.12);
+    }
+
+    .result-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin: 0;
+    }
+    .result-value {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0;
+    }
+    .result-box.primary .result-value { color: var(--blue); }
+    .result-box.success .result-value { color: #16a34a; }
+    .result-box.warning .result-value { color: #d97706; }
+
+    /* Details */
+    .details {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      text-align: center;
+      padding: 12px 0 0;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #94a3b8;
+      padding: 8px 0;
+    }
+
+    @media (min-width: 480px) {
+      .wrap { padding: 32px 20px; }
+      .card { padding: 24px; }
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="card">
+    <div class="header">
       <h1>Fahrtkosten Rechner</h1>
-      <p>Berechnet Kosten für einfache Fahrt, hin und zurück, plus Anteil pro Person.</p>
-
-      <div class="grid">
-        <div>
-          <label for="distance">Strecke gesamt in km (hin und zurück)</label>
-          <input id="distance" inputmode="decimal" type="number" min="0" step="0.1" value="36.6" />
-        </div>
-
-        <div>
-          <label for="consumption">Verbrauch in Liter pro 100 km</label>
-          <input id="consumption" inputmode="decimal" type="number" min="0" step="0.1" value="7.5" />
-        </div>
-
-        <div>
-          <label for="price">Spritpreis in Euro pro Liter</label>
-          <input id="price" inputmode="decimal" type="number" min="0" step="0.01" value="1.60" />
-        </div>
-
-        <div>
-          <label for="persons">Personen</label>
-          <input id="persons" inputmode="numeric" type="number" min="1" step="1" value="2" />
-        </div>
-      </div>
-
-      <div class="results" aria-live="polite">
-        <div class="resultBox">
-          <p class="resultTitle">Kosten einfache Fahrt</p>
-          <p class="resultValue" id="costOneWay">0,00 €</p>
-        </div>
-        <div class="resultBox">
-          <p class="resultTitle">Kosten hin und zurück</p>
-          <p class="resultValue" id="costRoundTrip">0,00 €</p>
-        </div>
-        <div class="resultBox">
-          <p class="resultTitle">Pro Person</p>
-          <p class="resultValue" id="costPerPerson">0,00 €</p>
-        </div>
-      </div>
-
-      <div class="footer" id="details"></div>
-      <div class="muted">Hinweis: Rundung auf 2 Nachkommastellen, Anzeige im Euro Format.</div>
+      <p>Spritkosten berechnen &ndash; einfache Fahrt, hin &amp; zurück und pro Person.</p>
     </div>
+
+    <div class="card">
+      <p class="card-title">Eingaben</p>
+      <div class="grid">
+        <div class="field">
+          <label for="distance">Strecke <span class="unit">(hin &amp; zurück)</span></label>
+          <input id="distance" inputmode="decimal" type="number" min="0" step="0.1" placeholder="z.B. 50 km" />
+        </div>
+
+        <div class="field">
+          <label for="consumption">Verbrauch <span class="unit">(l/100 km)</span></label>
+          <input id="consumption" inputmode="decimal" type="number" min="0" step="0.1" placeholder="z.B. 7,5" />
+        </div>
+
+        <div class="field">
+          <label for="price">Spritpreis <span class="unit">(€/Liter)</span></label>
+          <input id="price" inputmode="decimal" type="number" min="0" step="0.01" placeholder="z.B. 1,60" />
+        </div>
+
+        <div class="field">
+          <label for="persons">Personen</label>
+          <input id="persons" inputmode="numeric" type="number" min="1" step="1" placeholder="1" />
+        </div>
+      </div>
+    </div>
+
+    <div class="card" aria-live="polite">
+      <p class="card-title">Ergebnis</p>
+      <div class="results">
+        <div class="result-box primary">
+          <p class="result-label">Einfache Fahrt</p>
+          <p class="result-value" id="costOneWay">&ndash;</p>
+        </div>
+        <div class="result-box success">
+          <p class="result-label">Hin &amp; zurück</p>
+          <p class="result-value" id="costRoundTrip">&ndash;</p>
+        </div>
+        <div class="result-box warning">
+          <p class="result-label">Pro Person</p>
+          <p class="result-value" id="costPerPerson">&ndash;</p>
+        </div>
+      </div>
+      <div class="details" id="details"></div>
+    </div>
+
+    <div class="footer">Rundung auf 2 Nachkommastellen &middot; Angaben in Euro</div>
   </div>
 
   <script src="app.js"></script>
