@@ -3,6 +3,7 @@
     const elConsumption = document.getElementById("consumption");
     const elPrice = document.getElementById("price");
     const elPersons = document.getElementById("persons");
+    const elRoundTrip = document.getElementById("roundTrip");
 
     const elCostOneWay = document.getElementById("costOneWay");
     const elCostRoundTrip = document.getElementById("costRoundTrip");
@@ -39,30 +40,36 @@
         return;
       }
 
-      const distanceRoundTripKm = Math.max(0, toNumber(elDistance.value));
+      const oneWayKm = Math.max(0, toNumber(elDistance.value));
+      const includeReturn = elRoundTrip.checked;
+      const totalKm = includeReturn ? oneWayKm * 2 : oneWayKm;
       const consumptionLper100 = Math.max(0, toNumber(elConsumption.value));
       const pricePerL = Math.max(0, toNumber(elPrice.value));
       const persons = clampInt(elPersons.value || "1", 1);
 
-      const liters = (distanceRoundTripKm * consumptionLper100) / 100;
-      const costRoundTrip = liters * pricePerL;
+      const liters = (totalKm * consumptionLper100) / 100;
+      const costTotal = liters * pricePerL;
+      const costPerPerson = costTotal / persons;
 
-      const costOneWay = costRoundTrip / 2;
-      const costPerPerson = costRoundTrip / persons;
-
-      elCostOneWay.textContent = moneyEUR(costOneWay);
-      elCostRoundTrip.textContent = moneyEUR(costRoundTrip);
+      elCostOneWay.textContent = moneyEUR(includeReturn ? costTotal / 2 : costTotal);
+      elCostRoundTrip.textContent = includeReturn ? moneyEUR(costTotal) : "\u2013";
       elCostPerPerson.textContent = moneyEUR(costPerPerson);
 
       const litersText = liters.toFixed(3).replace(".", ",");
-      const kmOneWay = (distanceRoundTripKm / 2).toFixed(1).replace(".", ",");
-      elDetails.textContent =
-        `${litersText} Liter f\u00fcr ${distanceRoundTripKm.toFixed(1).replace(".", ",")} km ` +
-        `(eine Fahrt: ${kmOneWay} km)`;
+      const totalKmText = totalKm.toFixed(1).replace(".", ",");
+      if (includeReturn) {
+        elDetails.textContent =
+          `${litersText} Liter f\u00fcr ${totalKmText} km ` +
+          `(${oneWayKm.toFixed(1).replace(".", ",")} km einfach + R\u00fcckweg)`;
+      } else {
+        elDetails.textContent =
+          `${litersText} Liter f\u00fcr ${totalKmText} km (einfache Fahrt)`;
+      }
     }
 
     const inputs = [elDistance, elConsumption, elPrice, elPersons];
     inputs.forEach((i) => i.addEventListener("input", calculate));
+    elRoundTrip.addEventListener("change", calculate);
     calculate();
 
     if ("serviceWorker" in navigator) {
