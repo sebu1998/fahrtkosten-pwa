@@ -162,6 +162,60 @@
       padding: 8px 0;
     }
 
+    /* Toggle */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      grid-column: 1 / -1;
+    }
+    .toggle-row label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      cursor: pointer;
+      user-select: none;
+    }
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+    .toggle .slider {
+      position: absolute;
+      inset: 0;
+      background: var(--border);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .toggle .slider::before {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,.15);
+    }
+    .toggle input:checked + .slider {
+      background: var(--blue);
+    }
+    .toggle input:checked + .slider::before {
+      transform: translateX(20px);
+    }
+
     @media (min-width: 480px) {
       .wrap { padding: 32px 20px; }
       .card { padding: 24px; }
@@ -173,15 +227,15 @@
   <div class="wrap">
     <div class="header">
       <h1>Fahrtkosten Rechner</h1>
-      <p>Spritkosten berechnen &ndash; einfache Fahrt, hin &amp; zurück und pro Person.</p>
+      <p>Spritkosten berechnen &ndash; Strecke eingeben, optional mit Rückweg.</p>
     </div>
 
     <div class="card">
       <p class="card-title">Eingaben</p>
       <div class="grid">
         <div class="field">
-          <label for="distance">Strecke <span class="unit">(hin &amp; zurück)</span></label>
-          <input id="distance" inputmode="decimal" type="number" min="0" step="0.1" placeholder="z.B. 50 km" />
+          <label for="distance">Strecke <span class="unit">(einfache Fahrt)</span></label>
+          <input id="distance" inputmode="decimal" type="number" min="0" step="0.1" placeholder="z.B. 25 km" />
         </div>
 
         <div class="field">
@@ -197,6 +251,14 @@
         <div class="field">
           <label for="persons">Personen</label>
           <input id="persons" inputmode="numeric" type="number" min="1" step="1" placeholder="1" />
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle">
+            <input type="checkbox" id="roundTrip" />
+            <span class="slider"></span>
+          </div>
+          <label for="roundTrip">Rückweg mitberechnen</label>
         </div>
       </div>
     </div>
